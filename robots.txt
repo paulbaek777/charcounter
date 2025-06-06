@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://paulbaek777.github.io/charcounter/sitemap.xml
