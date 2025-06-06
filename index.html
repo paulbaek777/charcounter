@@ -47,10 +47,34 @@
       line-height: 1.5;
     }
 
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #0066cc;
+      color: white;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #004d99;
+    }
+
     .result {
       margin-top: 20px;
       font-size: 18px;
       color: #333;
+      line-height: 1.6;
     }
 
     .ad-box {
@@ -76,23 +100,53 @@
 <body>
   <div class="container">
     <h1>글자수 세기 도구</h1>
-    <p class="description">공백 포함된 글자 수를 실시간으로 확인할 수 있어요.</p>
+    <p class="description">공백 포함 및 제외 글자 수를 실시간으로 확인할 수 있어요.</p>
     <textarea id="inputText" placeholder="여기에 텍스트를 입력하세요..."></textarea>
-    <div class="result">
-      총 글자 수 (공백 포함): <span id="charCount">0</span>
+    
+    <div class="buttons">
+      <button onclick="copyText()">복사</button>
+      <button onclick="clearText()">초기화</button>
+      <button onclick="confirmText()">확인</button>
     </div>
+
+    <div class="result">
+      총 글자 수 (공백 포함): <span id="charCount">0</span><br>
+      총 글자 수 (공백 제외): <span id="charCountNoSpace">0</span>
+    </div>
+
     <div class="ad-box">
       [광고 자리]<br>
-      나중에 애드센스 광고 코드 삽입 가능
+      애드센스 광고 코드가 여기에 들어갈 수 있습니다.
     </div>
   </div>
 
   <script>
     const textarea = document.getElementById('inputText');
     const charCount = document.getElementById('charCount');
-    textarea.addEventListener('input', () => {
-      charCount.textContent = textarea.value.length;
-    });
+    const charCountNoSpace = document.getElementById('charCountNoSpace');
+
+    textarea.addEventListener('input', updateCount);
+
+    function updateCount() {
+      const text = textarea.value;
+      charCount.textContent = text.length;
+      charCountNoSpace.textContent = text.replace(/\s/g, '').length;
+    }
+
+    function copyText() {
+      navigator.clipboard.writeText(textarea.value)
+        .then(() => alert("복사되었습니다!"))
+        .catch(() => alert("복사에 실패했어요."));
+    }
+
+    function clearText() {
+      textarea.value = '';
+      updateCount();
+    }
+
+    function confirmText() {
+      alert(`공백 포함: ${charCount.textContent}자\n공백 제외: ${charCountNoSpace.textContent}자`);
+    }
   </script>
 </body>
 </html>
