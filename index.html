@@ -1,15 +1,80 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>글자수 세기 도구</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 24px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      font-size: 16px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #444;
+    }
+
+    .ad-box {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #eee;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+      .result {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>글자수 세기 도구</h1>
-  <textarea id="inputText" rows="10" cols="50" placeholder="여기에 텍스트를 입력하세요"></textarea>
-  <p>총 글자 수 (공백 포함): <span id="charCount">0</span></p>
+  <div class="container">
+    <h1>글자수 세기 도구</h1>
+    <textarea id="inputText" placeholder="여기에 텍스트를 입력하세요"></textarea>
+    <div class="result">
+      총 글자 수 (공백 포함): <span id="charCount">0</span>
+    </div>
+    <div class="ad-box">
+      [여기 광고 들어갈 자리]<br>
+      나중에 애드센스 광고 코드 붙이면 됩니다.
+    </div>
+  </div>
+
   <script>
     const textarea = document.getElementById('inputText');
     const charCount = document.getElementById('charCount');
