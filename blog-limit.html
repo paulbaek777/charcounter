@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>블로그 글자수 제한 확인기 - 공백 포함/제외 텍스트 계산기</title>
+
+  <!-- SEO -->
+  <meta name="description" content="블로그 글 작성 전 글자수 제한이 걱정된다면? 공백 포함/제외 기준으로 정확하게 글자 수를 실시간으로 확인하세요. 티스토리, 네이버 블로그용 텍스트 계산기.">
+  <meta name="keywords" content="블로그 글자수, 글자 수 제한, 글자수 계산기, 공백 포함, 공백 제외, 블로그 글 작성 도구, 티스토리 글자수, 네이버 블로그 글자수">
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="PaulBaek" />
+  <link rel="canonical" href="https://paulbaek777.github.io/charcounter/blog-limit.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="블로그 글자수 제한 확인기 - 블로그 글 작성 전 필수 도구" />
+  <meta property="og:description" content="티스토리, 네이버 블로그 글 작성 시 글자 수 제한을 공백 포함/제외로 실시간 확인하세요." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://paulbaek777.github.io/charcounter/blog-limit.html" />
+  <meta property="og:image" content="https://paulbaek777.github.io/charcounter/og-image.png" />
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fff8f0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 30px auto;
+      background-color: #ffffff;
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff6600;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 160px;
+      font-size: 16px;
+      padding: 12px;
+      box-sizing: border-box;
+      resize: vertical;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #ff6600;
+      color: white;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #cc5200;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .ad-box {
+      margin-top: 30px;
+      padding: 16px;
+      background-color: #f1f1f1;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+      .result {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>블로그 글자수 제한 확인기</h1>
+    <p class="description">티스토리, 네이버 블로그 작성 시 글자 수 초과 오류 방지를 위한 도구입니다. 공백 포함/제외로 정확하게 계산하세요.</p>
+    <textarea id="inputText" placeholder="여기에 블로그 글 내용을 입력하세요..."></textarea>
+
+    <div class="buttons">
+      <button onclick="copyText()">복사</button>
+      <button onclick="clearText()">초기화</button>
+      <button onclick="confirmText()">확인</button>
+    </div>
+
+    <div class="result">
+      총 글자 수 (공백 포함): <span id="charCount">0</span><br>
+      총 글자 수 (공백 제외): <span id="charCountNoSpace">0</span><br>
+      총 단어 수: <span id="wordCount">0</span><br>
+      총 줄 수: <span id="lineCount">0</span><br>
+      총 문장 수: <span id="sentenceCount">0</span>
+    </div>
+
+    <div class="ad-box">
+      [광고 자리]<br>
+      이 자리에 애드센스 코드 또는 배너 광고를 넣을 수 있습니다.
+    </div>
+  </div>
+
+  <script>
+    const textarea = document.getElementById('inputText');
+    const charCount = document.getElementById('charCount');
+    const charCountNoSpace = document.getElementById('charCountNoSpace');
+    const wordCount = document.getElementById('wordCount');
+    const lineCount = document.getElementById('lineCount');
+    const sentenceCount = document.getElementById('sentenceCount');
+
+    textarea.addEventListener('input', updateCount);
+
+    function updateCount() {
+      const text = textarea.value;
+      charCount.textContent = text.length;
+      charCountNoSpace.textContent = text.replace(/\s/g, '').length;
+      wordCount.textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+      lineCount.textContent = text === '' ? 0 : text.split(/\n/).length;
+      sentenceCount.textContent = (text.match(/[.!?]+/g) || []).length;
+    }
+
+    function copyText() {
+      navigator.clipboard.writeText(textarea.value)
+        .then(() => alert("복사되었습니다!"))
+        .catch(() => alert("복사에 실패했어요."));
+    }
+
+    function clearText() {
+      textarea.value = '';
+      updateCount();
+    }
+
+    function confirmText() {
+      alert(`공백 포함: ${charCount.textContent}자\n공백 제외: ${charCountNoSpace.textContent}자\n단어: ${wordCount.textContent}개\n줄 수: ${lineCount.textContent}줄\n문장 수: ${sentenceCount.textContent}문장`);
+    }
+  </script>
+</body>
+</html>
